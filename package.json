@@ -1,0 +1,28 @@
+{
+  "name": "measure-lib",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casey-chow/measure-lib.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/casey-chow/measure-lib/issues"
+  },
+  "homepage": "https://github.com/casey-chow/measure-lib#readme",
+  "dependencies": {
+    "@types/node": "^8.0.55",
+    "rpio": "^0.9.19",
+    "sleep": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/rpio": "0.0.1",
+    "@types/sleep": "0.0.7"
+  }
+}
