@@ -3,7 +3,8 @@
         "module": "commonjs",
         "lib": [ "es2015" ],
         "preserveConstEnums": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "outDir": "dist"
     },
     "exclude": [
         "node_modules"
