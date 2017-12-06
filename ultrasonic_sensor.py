@@ -8,7 +8,6 @@ SPEED_OF_SOUND = 13503.9 # inches per second
 GPIO_TRIGGER = 17
 GPIO_ECHO = 27
 
-GPIO.setmode(GPIO.BCM)
 
 class DistanceMeasurementWorker(Thread):
     def __init__(self, trigger, echo, poll_time, cb):
@@ -18,13 +17,14 @@ class DistanceMeasurementWorker(Thread):
         self.poll_time = poll_time
         self.cb = cb
 
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.trigger, GPIO.OUT)
         GPIO.setup(self.echo, GPIO.IN)
 
     def run(self):
         while True:
             dist = self.distance()
-            self.cb(distance)
+            self.cb(dist)
             time.sleep(self.poll_time)
 
     def distance(self):
@@ -43,7 +43,8 @@ class DistanceMeasurementWorker(Thread):
 
 if __name__ == '__main__':
     try:
-        print_distance = lambda distance: print("distance: {}".format(distance))
+        def print_distance(distance): 
+            print("distance: {}".format(distance))
 
         worker = DistanceMeasurementWorker(
             trigger=GPIO_TRIGGER,
@@ -52,6 +53,7 @@ if __name__ == '__main__':
             cb=print_distance,
         )
         worker.start()
+        worker.join()
 
     finally:
         GPIO.cleanup()
