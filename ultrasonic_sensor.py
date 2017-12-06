@@ -1,5 +1,4 @@
 # adapted from https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/
-from threading import Thread
 import time
 import RPi.GPIO as GPIO
 
@@ -9,23 +8,15 @@ GPIO_TRIGGER = 17
 GPIO_ECHO = 27
 
 
-class DistanceMeasurementWorker(Thread):
-    def __init__(self, trigger, echo, poll_time, cb):
-        Thread.__init__(self)
+class UltrasonicSensor:
+    def __init__(self, trigger, echo, poll_time):
         self.trigger = trigger
         self.echo = echo
         self.poll_time = poll_time
-        self.cb = cb
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.trigger, GPIO.OUT)
         GPIO.setup(self.echo, GPIO.IN)
-
-    def run(self):
-        while True:
-            dist = self.distance()
-            self.cb(dist)
-            time.sleep(self.poll_time)
 
     def distance(self):
         GPIO.output(self.trigger, True)
@@ -43,17 +34,14 @@ class DistanceMeasurementWorker(Thread):
 
 if __name__ == '__main__':
     try:
-        def print_distance(distance): 
+        def print_distance(distance):
             print("distance: {}".format(distance))
 
-        worker = DistanceMeasurementWorker(
+        sensor = UltrasonicSensor(
             trigger=GPIO_TRIGGER,
             echo=GPIO_ECHO,
             poll_time=1,
-            cb=print_distance,
         )
-        worker.start()
-        worker.join()
 
     finally:
         GPIO.cleanup()
