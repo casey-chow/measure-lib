@@ -2,12 +2,12 @@
 import RPi.GPIO as GPIO
 import time
 
-PINS = [
-    # TRIGGER, ECHO
-    (4, 17),
-    (27, 22),
-]
+GPIO_TRIGGER = 17
+GPIO_ECHO = 27
 
+GPIO.setmode(GPIO.BCM)
+
+print('setup')
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
@@ -41,6 +41,7 @@ def distance():
 
 if __name__ == '__main__':
     try:
+        print('measure')
         while True:
             dist = distance()
             print ("Measured Distance = %.1f cm" % dist)
