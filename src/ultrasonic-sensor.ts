@@ -3,6 +3,8 @@ import { usleep } from 'sleep';
 import { getDiffieHellman } from 'crypto';
 import { ENGINE_METHOD_DIGESTS } from 'constants';
 
+const SPEED_OF_SOUND = 1.35039e-5; // speed of sound in inches per nanosecond
+
 type pin = { id: string, trigger: number, echo: number };
 const PINS : pin[] = [
     {
@@ -17,25 +19,24 @@ const PINS : pin[] = [
     // },
 ];
 
-console.log('initiating...');
+console.log('initializing');
 rpio.init({mapping: 'gpio'}); 
 
 PINS.forEach(({ trigger, echo }) => {
     rpio.open(trigger, rpio.OUTPUT, rpio.LOW);
     rpio.open(echo, rpio.INPUT);
 });
-console.log('pins opened...');
 
 const getDistance = ({ trigger, echo }: pin) => {
     rpio.write(trigger, rpio.HIGH);
-    usleep(1);
+    usleep(1000);
     rpio.write(trigger, rpio.LOW);
 
     while (rpio.read(echo) === 0);
     const start = process.hrtime();
     while (rpio.read(echo) === 1);
     const [seconds, nanoseconds] = process.hrtime(start);
-    const distance = (seconds * 1e9 + nanoseconds) * 3.43e-5;
+    const distance = (seconds * 1e9 + nanoseconds) * SPEED_OF_SOUND;
 
     return distance / 2;
 }
@@ -52,6 +53,7 @@ process.on('SIGINT', function() {
 });
 
 const getDistanceRecursive = () => {
+    console.log('logging');
     console.log(getDistance(PINS[0]));
     process.nextTick(getDistanceRecursive);
 }
