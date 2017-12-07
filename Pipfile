@@ -9,6 +9,7 @@ name = "pypi"
 
 asyncio = "*"
 "rpi.gpio" = "*"
+numpy = "*"
 
 
 [dev-packages]
