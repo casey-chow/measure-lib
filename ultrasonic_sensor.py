@@ -3,6 +3,7 @@ import time
 import signal
 import sys
 import numpy as np
+from hmmlearn import hmm
 import RPi.GPIO as GPIO
 
 from ring_buffer import RingBuffer
@@ -63,6 +64,20 @@ class UltrasonicSensor:
                 if on_exit:
                     on_exit()
             time.sleep(poll_time)
+
+    def train(self, sample_size):
+        print("training...\n")
+        self.model = hmm.GaussianHMM(
+            n_components=4,
+            covariance_type="full",
+        )
+        def sample():
+            time.sleep(0.1)
+            dist = self.distance()
+            sys.stdout.write("\rdist")
+
+        samples = [sample() for _ in range(sample_size)]
+        self.model.fit(samples)
 
 
 if __name__ == '__main__':

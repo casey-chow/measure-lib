@@ -11,6 +11,8 @@ asyncio = "*"
 "rpi.gpio" = "*"
 numpy = "*"
 "scikit-learn" = "*"
+hmmlearn = "*"
+scipy = "*"
 
 
 [dev-packages]
