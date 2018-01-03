@@ -10,6 +10,7 @@ name = "pypi"
 asyncio = "*"
 "rpi.gpio" = "*"
 numpy = "*"
+"scikit-learn" = "*"
 hmmlearn = "*"
 scipy = "*"
 
