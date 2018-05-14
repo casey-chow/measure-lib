@@ -7,14 +7,14 @@
             "implementation_name": "cpython",
             "implementation_version": "3.6.3",
             "os_name": "posix",
-            "platform_machine": "x86_64",
+            "platform_machine": "armv7l",
             "platform_python_implementation": "CPython",
-            "platform_release": "16.7.0",
-            "platform_system": "Darwin",
-            "platform_version": "Darwin Kernel Version 16.7.0: Thu Jun 15 17:36:27 PDT 2017; root:xnu-3789.70.16~2/RELEASE_X86_64",
+            "platform_release": "4.9.35-v7+",
+            "platform_system": "Linux",
+            "platform_version": "#1014 SMP Fri Jun 30 14:47:43 BST 2017",
             "python_full_version": "3.6.3",
             "python_version": "3.6",
-            "sys_platform": "darwin"
+            "sys_platform": "linux"
         },
         "pipfile-spec": 6,
         "requires": {

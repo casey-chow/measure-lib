@@ -27,9 +27,11 @@ class UltrasonicSensor:
         GPIO.setup(self.echo, GPIO.IN)
 
     def distance(self):
-        GPIO.output(self.trigger, True)
+        while GPIO.input(self.echo): 
+            pass
+
         start_time = time.perf_counter()
-        time.sleep(0.0001)
+        GPIO.output(self.trigger, True)
         GPIO.output(self.trigger, False)
 
         GPIO.wait_for_edge(self.echo, GPIO.FALLING, timeout=100)
@@ -53,7 +55,7 @@ class UltrasonicSensor:
 
             avg = np.median(history)
             if DEBUG:
-                sys.stdout.write('\rdist: {} avg: {}'.format(dist, avg))
+                sys.stdout.write('\rdist: {:06.10f} avg: {:06.10f}'.format(dist, avg))
 
             if not entered and avg < THRESHOLD:
                 entered = True
@@ -80,6 +82,17 @@ class UltrasonicSensor:
         self.model.fit(samples)
 
 
+def poll_two(sensor1, sensor2):
+    while True:
+        dist1 = sensor1.distance()
+        time.sleep(0.1)
+        dist2 = sensor2.distance()
+
+        sys.stdout.write('\r {:06.10f} : {:06.10f}'.format(dist1, dist2))
+
+        time.sleep(0.1)
+
+
 if __name__ == '__main__':
     def signal_handler(sig, frame):
         print()
@@ -94,9 +107,15 @@ if __name__ == '__main__':
         trigger=GPIO_TRIGGER,
         echo=GPIO_ECHO,
     )
-
-    sensor.poll(
-        poll_time=.01,
-        on_enter=lambda: print('entered!'),
-        on_exit=lambda: print('exited'),
+    sensor2 = UltrasonicSensor(
+        trigger=13,
+        echo=19,
     )
+
+    poll_two(sensor, sensor2)
+
+    # sensor.poll(
+    #     poll_time=.01,
+    #     on_enter=lambda: print('entered!'),
+    #     on_exit=lambda: print('exited'),
+    # )
